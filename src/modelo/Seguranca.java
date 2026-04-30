@@ -2,14 +2,14 @@ package modelo;
 
 import java.util.LinkedList;
 
-public class Seguranca extends Pessoa{
+public class Seguranca extends Pessoa implements Funcionario{
+    private final GestorFuncionarios gestorFuncionarios = new GestorFuncionarios();
     GabineteSeguranca gabineteSeguranca;
-    private LinkedList<Horario> horariosDeAtendimento;
 
     public Seguranca(String name, long num, GabineteSeguranca gabineteSeguranca){
         super(name,num);
         this.gabineteSeguranca=gabineteSeguranca;
-        horariosDeAtendimento= new LinkedList<>();
+        gestorFuncionarios.horariosDeAtendimento = new LinkedList<>();
     }
 
     public GabineteSeguranca getGabineteSeguranca() {
@@ -17,7 +17,7 @@ public class Seguranca extends Pessoa{
     }
 
     public LinkedList<Horario> getHorariosDeAtendimento() {
-        return new LinkedList<>(horariosDeAtendimento);
+        return gestorFuncionarios.getHorariosDeAtendimento();
     }
     public void associarGabinete(GabineteSeguranca gabineteSeguranca) {
         if (gabineteSeguranca==null || gabineteSeguranca==this.gabineteSeguranca){
@@ -51,50 +51,27 @@ public class Seguranca extends Pessoa{
         }
         gabineteSeguranca.fechar();
     }
-    public void abrirGabineteProfessor(GabineteProfessor gabineteProfessor){
-        if (gabineteProfessor.isAberta()) {
+    public void abrirDivisao(Divisao divisao){
+        if (divisao.isAberta()) {
             return;
         }
-        gabineteProfessor.abrir();
+        divisao.abrir();
     }
-    public void fecharGabineteProfessor(GabineteProfessor gabineteProfessor){
-        if (gabineteProfessor.isFechada()) {
+    public void fecharDivisao(Divisao divisao){
+        if (divisao.isFechada()) {
             return;
         }
-        gabineteProfessor.fechar();
-    }
-    public void abrirSala(Sala sala){
-        if (sala.isAberta()) {
-            return;
-        }
-        sala.abrir();
-    }
-    public void fecharSala(Sala sala){
-        if (sala.isFechada()) {
-            return;
-        }
-        sala.fechar();
+        divisao.fechar();
     }
     public void adicionarHorario(Horario horariosDeAtendimento) {
-        if (horariosDeAtendimento == null || horarioIsSobreHorarios(horariosDeAtendimento)) {
-            return;
-        }
-        this.horariosDeAtendimento.add(horariosDeAtendimento);
+        gestorFuncionarios.adicionarHorario(horariosDeAtendimento);
     }
 
-    private boolean horarioIsSobreHorarios(Horario horario) {
-        for (Horario horario1 : horariosDeAtendimento){
-            if(horario1.isSobre(horario)){
-                return true;
-            }
-        }
-        return false;
+    public boolean horarioIsSobreHorarios(Horario horario) {
+        return gestorFuncionarios.horarioIsSobreHorarios(horario);
     }
 
     public void removerhorariosDeAtendimento(Horario horariosDeAtendimento) {
-        if (horariosDeAtendimento == null || !this.horariosDeAtendimento.contains(horariosDeAtendimento)) {
-            return;
-        }
-        this.horariosDeAtendimento.remove(horariosDeAtendimento);
+        gestorFuncionarios.removerhorariosDeAtendimento(horariosDeAtendimento);
     }
 }

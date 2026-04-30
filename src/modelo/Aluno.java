@@ -10,11 +10,11 @@ public class Aluno extends PessoaComAulas {
         aula.adicionarLinhaSumario(nome);
     }
 
-    protected void associar(Aula aula) {
+    public void associar(Aula aula) {
         aula.adicionarAluno(this);
     }
 
-    protected void desassociar(Aula aula) {
+    public void desassociar(Aula aula) {
         aula.removerAluno(this);
     }
 

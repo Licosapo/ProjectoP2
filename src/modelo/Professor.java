@@ -2,7 +2,7 @@ package modelo;
 
 import java.util.LinkedList;
 
-public class Professor extends PessoaComAulas {
+public class Professor extends PessoaComAulas implements Funcionario {
 
     private GabineteProfessor gabineteProfessor;
     private LinkedList<Horario> horariosDeAtendimento;
@@ -23,12 +23,12 @@ public class Professor extends PessoaComAulas {
     }
 
     @Override
-    protected void associar(Aula aula) {
+    public void associar(Aula aula) {
         aula.atribuirProfessor(this);
     }
 
     @Override
-    protected void desassociar(Aula aula) {
+    public void desassociar(Aula aula) {
         aula.desassociarProfessor();
     }
 
@@ -56,6 +56,7 @@ public class Professor extends PessoaComAulas {
         return gabineteProfessor;
     }
 
+    @Override
     public LinkedList<Horario> getHorariosDeAtendimento() {
         return new LinkedList<>(horariosDeAtendimento);
     }
@@ -83,6 +84,7 @@ public class Professor extends PessoaComAulas {
         }
         sala.fechar();
     }
+    @Override
     public void adicionarHorario(Horario horariosDeAtendimento) {
         if (horariosDeAtendimento == null || horarioIsSobreHorarios(horariosDeAtendimento)) {
             return;
@@ -90,7 +92,8 @@ public class Professor extends PessoaComAulas {
         this.horariosDeAtendimento.add(horariosDeAtendimento);
     }
 
-    private boolean horarioIsSobreHorarios(Horario horario) {
+    @Override
+    public boolean horarioIsSobreHorarios(Horario horario) {
         for (Horario horario1 : horariosDeAtendimento){
             if(horario1.isSobre(horario)){
                 return true;
@@ -99,6 +102,7 @@ public class Professor extends PessoaComAulas {
         return false;
     }
 
+    @Override
     public void removerhorariosDeAtendimento(Horario horariosDeAtendimento) {
         if (horariosDeAtendimento == null || !this.horariosDeAtendimento.contains(horariosDeAtendimento)) {
             return;
