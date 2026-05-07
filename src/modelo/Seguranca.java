@@ -2,17 +2,17 @@ package modelo;
 
 import java.util.LinkedList;
 
-public class Seguranca extends Pessoa implements Funcionario{
-    private final GestorFuncionarios gestorFuncionarios = new GestorFuncionarios();
+public class Seguranca extends Pessoa implements Funcionario<GabineteSeguranca,Divisao>{
+    private final GestorFuncionario gestorFuncionarios;
     GabineteSeguranca gabineteSeguranca;
 
     public Seguranca(String name, long num, GabineteSeguranca gabineteSeguranca){
         super(name,num);
         this.gabineteSeguranca=gabineteSeguranca;
-        gestorFuncionarios.horariosDeAtendimento = new LinkedList<>();
+        gestorFuncionarios=new GestorFuncionario();
     }
 
-    public GabineteSeguranca getGabineteSeguranca() {
+    public GabineteSeguranca getGabinete() {
         return gabineteSeguranca;
     }
 
@@ -24,10 +24,10 @@ public class Seguranca extends Pessoa implements Funcionario{
             return;
         }
         if (this.gabineteSeguranca!=null){
-            this.gabineteSeguranca.removerSeguranca(this);
+            this.gabineteSeguranca.remover(this);
         }
         this.gabineteSeguranca=gabineteSeguranca;
-        gabineteSeguranca.adicionarSeguranca(this);
+        gabineteSeguranca.adicionar(this);
     }
 
     public void desassociarGabinete() {
@@ -36,7 +36,7 @@ public class Seguranca extends Pessoa implements Funcionario{
         }
         GabineteSeguranca gabineteSegurancaCopy = this.gabineteSeguranca;
         this.gabineteSeguranca=null;
-        gabineteSegurancaCopy.removerSeguranca(this);
+        gabineteSegurancaCopy.remover(this);
     }
 
     public void abrirGabinete(){

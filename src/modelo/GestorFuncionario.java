@@ -2,18 +2,18 @@ package modelo;
 
 import java.util.LinkedList;
 
-public class GestorFuncionarios implements Funcionario {
+public class GestorFuncionario {
     LinkedList<Horario> horariosDeAtendimento;
 
-    public GestorFuncionarios() {
+    public GestorFuncionario() {
     }
 
     public LinkedList<Horario> getHorariosDeAtendimento() {
-        return new LinkedList<Horario>(horariosDeAtendimento);
+        return new LinkedList<>(horariosDeAtendimento);
     }
 
     public void adicionarHorario(Horario horariosDeAtendimento) {
-        if (horariosDeAtendimento == null || null.horarioIsSobreHorarios(horariosDeAtendimento)) {
+        if (horariosDeAtendimento == null || horarioIsSobreHorarios(horariosDeAtendimento)) {
             return;
         }
         this.horariosDeAtendimento.add(horariosDeAtendimento);

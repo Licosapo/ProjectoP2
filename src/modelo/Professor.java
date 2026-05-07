@@ -2,14 +2,15 @@ package modelo;
 
 import java.util.LinkedList;
 
-public class Professor extends PessoaComAulas implements Funcionario {
+public class Professor extends PessoaComAulas implements Funcionario<GabineteProfessor,Sala> {
 
     private GabineteProfessor gabineteProfessor;
-    private LinkedList<Horario> horariosDeAtendimento;
+    private final GestorFuncionario gestorFuncionario;
 
     public Professor(String nome, long numero, GabineteProfessor gabineteProfessor) {
         super(nome,numero);
         associarGabinete(gabineteProfessor);
+        gestorFuncionario=new GestorFuncionario();
     }
 
     @Override
@@ -32,40 +33,45 @@ public class Professor extends PessoaComAulas implements Funcionario {
         aula.desassociarProfessor();
     }
 
+    @Override
     public void associarGabinete(GabineteProfessor gabineteProfessor) {
         if (gabineteProfessor==null || gabineteProfessor==this.gabineteProfessor){
             return;
         }
         if (this.gabineteProfessor!=null){
-            this.gabineteProfessor.removerProfessor(this);
+            this.gabineteProfessor.remover(this);
         }
         this.gabineteProfessor=gabineteProfessor;
-        gabineteProfessor.adicionarProfessor(this);
+        gabineteProfessor.adicionar(this);
     }
 
+    @Override
     public void desassociarGabinete() {
         if (gabineteProfessor == null) {
             return;
         }
         GabineteProfessor gabineteProfessorCopy = this.gabineteProfessor;
         this.gabineteProfessor=null;
-        gabineteProfessorCopy.removerProfessor(this);
+        gabineteProfessorCopy.remover(this);
     }
 
-    public GabineteProfessor getGabineteProfessor() {
+    @Override
+    public GabineteProfessor getGabinete() {
         return gabineteProfessor;
     }
 
     @Override
     public LinkedList<Horario> getHorariosDeAtendimento() {
-        return new LinkedList<>(horariosDeAtendimento);
+        return gestorFuncionario.getHorariosDeAtendimento();
     }
+    @Override
     public void abrirGabinete(){
         if (gabineteProfessor.isAberta()) {
             return;
         }
         gabineteProfessor.abrir();
     }
+    @Override
     public void fecharGabinete(){
         if (gabineteProfessor.isFechada()) {
             return;
@@ -86,27 +92,16 @@ public class Professor extends PessoaComAulas implements Funcionario {
     }
     @Override
     public void adicionarHorario(Horario horariosDeAtendimento) {
-        if (horariosDeAtendimento == null || horarioIsSobreHorarios(horariosDeAtendimento)) {
-            return;
-        }
-        this.horariosDeAtendimento.add(horariosDeAtendimento);
+        gestorFuncionario.adicionarHorario(horariosDeAtendimento);
     }
 
     @Override
     public boolean horarioIsSobreHorarios(Horario horario) {
-        for (Horario horario1 : horariosDeAtendimento){
-            if(horario1.isSobre(horario)){
-                return true;
-            }
-        }
-        return false;
+        return gestorFuncionario.horarioIsSobreHorarios(horario);
     }
 
     @Override
     public void removerhorariosDeAtendimento(Horario horariosDeAtendimento) {
-        if (horariosDeAtendimento == null || !this.horariosDeAtendimento.contains(horariosDeAtendimento)) {
-            return;
-        }
-        this.horariosDeAtendimento.remove(horariosDeAtendimento);
+        gestorFuncionario.removerhorariosDeAtendimento(horariosDeAtendimento);
     }
 }
